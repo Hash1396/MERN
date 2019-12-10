@@ -1,4 +1,6 @@
 {
   "mongoURI": "mongodb+srv://hash:Hash1234@mernapp-bc7e5.mongodb.net/test?retryWrites=true&w=majority",
-  "jwtSecret": "mysecret"
+  "jwtSecret": "mysecret",
+  "githubClientId": "a2a87c8306234b8d4d26",
+  "githubClientSecret": "5dbf6a733ab3564b2a573218fc6c4f004e241185"
 }
