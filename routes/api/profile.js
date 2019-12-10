@@ -53,8 +53,8 @@ router.post( '/', [ auth, [ check( 'status', 'Status is required' ).not().isEmpt
     youtube,
     facebook,
     twitter,
-    instagram,
-    linkedin
+    linkedin,
+    instagram
   } = req.body;
 
   // Build Profile Object
@@ -104,6 +104,20 @@ router.post( '/', [ auth, [ check( 'status', 'Status is required' ).not().isEmpt
   } catch ( err ) {
     console.error( err.message );
     res.staus( 500 ).send( 'Server error' );
+  }
+
+} );
+
+// @route  GET api/profile
+// @desc   Get all profiles
+// @access Public
+router.get( '/', async ( req, res ) => {
+  try {
+    const profiles = await Profile.find().populate( 'user', [ 'name', 'avatar' ] );
+    res.json( profiles );
+  } catch ( err ) {
+    console.error( err.message );
+    res.status( 500 ).send( 'Server error' );
   }
 
 } );

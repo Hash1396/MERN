@@ -17,7 +17,7 @@ const User = require( '../../models/User' );
 router.post(
   '/',
   [
-    check( 'name', 'Name is required' ).notEmpty(),
+    check( 'name', 'Name is required' ).not().isEmpty(),
     check( 'email', 'Please enter a valid email' ).isEmail(),
     check( 'password', 'Please enter a password with 6 or more characters' ).isLength( {
       min: 6
@@ -53,7 +53,7 @@ router.post(
 
       // Get users Gravatar
       const avatar = gravatar.url( email, {
-        s: '300',
+        s: '200',
         r: 'pg',
         d: 'mm'
       } )
