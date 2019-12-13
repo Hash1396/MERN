@@ -1,28 +1,28 @@
-const express = require( 'express' );
+const express = require('express');
 const router = express.Router();
-const jwt = require( 'jsonwebtoken' );
-const config = require( 'config' );
+const jwt = require('jsonwebtoken');
+const config = require('config');
 const {
   check,
   validationResult
-} = require( 'express-validator' );
-const bcrypt = require( 'bcryptjs' );
+} = require('express-validator');
+const bcrypt = require('bcryptjs');
 
-const User = require( '../../models/User' );
-const auth = require( '../../middleware/auth' );
+const User = require('../../models/User');
+const auth = require('../../middleware/auth');
 
 // @route  GET api/auth
 // @desc   TEST ROUTE
 // @access Public
-router.get( '/', auth, async ( req, res ) => {
+router.get('/', auth, async (req, res) => {
   try {
-    const user = await User.findById( req.user.id ).select( '-password' );
-    res.json( user );
-  } catch ( err ) {
-    console.error( err.message );
-    res.status( 500 ).send( 'Server error' );
+    const user = await User.findById(req.user.id).select('-password');
+    res.json(user);
+  } catch (err) {
+    console.error(err.message);
+    res.status(500).send('Server error');
   }
-} );
+});
 
 // @route  POST api/auth
 // @desc   Authenticate user and login and get token
@@ -30,15 +30,15 @@ router.get( '/', auth, async ( req, res ) => {
 router.post(
   '/',
   [
-    check( 'email', 'Please enter a valid email' ).isEmail(),
-    check( 'password', 'Password is needed' ).exists()
+    check('email', 'Please enter a valid email').isEmail(),
+    check('password', 'Password is needed').exists()
   ],
-  async ( req, res ) => {
-    const errors = validationResult( req );
-    if ( !errors.isEmpty() ) {
-      return res.status( 400 ).json( {
+  async (req, res) => {
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({
         errors: errors.array()
-      } );
+      });
     }
 
     const {
@@ -48,27 +48,27 @@ router.post(
 
     try {
       // See if user exists
-      let user = await User.findOne( {
+      let user = await User.findOne({
         email
-      } );
+      });
 
-      if ( !user ) {
-        return res.status( 400 ).json( {
-          errors: [ {
+      if (!user) {
+        return res.status(400).json({
+          errors: [{
             msg: 'Invalid Credentials'
-          } ]
-        } );
+          }]
+        });
       }
 
       // Verify User
-      const isMatch = await bcrypt.compare( password, user.password );
+      const isMatch = await bcrypt.compare(password, user.password);
 
-      if ( !isMatch ) {
-        return res.status( 400 ).json( {
-          errors: [ {
+      if (!isMatch) {
+        return res.status(400).json({
+          errors: [{
             msg: 'Invalid Credentials'
-          } ]
-        } );
+          }]
+        });
       }
 
       // return jsonwebtoken
@@ -80,19 +80,19 @@ router.post(
 
       jwt.sign(
         payload,
-        config.get( 'jwtSecret' ), {
-          expiresIn: 360000
-        },
-        ( err, token ) => {
-          if ( err ) throw err;
-          res.json( {
+        config.get('jwtSecret'), {
+        expiresIn: 360000
+      },
+        (err, token) => {
+          if (err) throw err;
+          res.json({
             token
-          } );
+          });
         }
       );
-    } catch ( err ) {
-      console.error( err.message );
-      res.status( 500 ).send( 'Server error' );
+    } catch (err) {
+      console.error(err.message);
+      res.status(500).send('Server error');
     }
   }
 );

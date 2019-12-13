@@ -1,6 +1,6 @@
-const mongoose = require( 'mongoose' );
+const mongoose = require('mongoose');
 
-const ProfileSchema = new mongoose.Schema( {
+const ProfileSchema = new mongoose.Schema({
   user: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'user'
@@ -19,7 +19,7 @@ const ProfileSchema = new mongoose.Schema( {
     required: true
   },
   skills: {
-    type: [ String ],
+    type: [String],
     required: true
   },
   bio: {
@@ -28,7 +28,7 @@ const ProfileSchema = new mongoose.Schema( {
   githubusername: {
     type: String
   },
-  experience: [ {
+  experience: [{
     title: {
       type: String,
       required: true
@@ -54,8 +54,8 @@ const ProfileSchema = new mongoose.Schema( {
     description: {
       type: String
     }
-  } ],
-  education: [ {
+  }],
+  education: [{
     school: {
       type: String,
       required: true
@@ -82,7 +82,7 @@ const ProfileSchema = new mongoose.Schema( {
     description: {
       type: String
     }
-  } ],
+  }],
   social: {
     youtube: {
       type: String
@@ -104,6 +104,6 @@ const ProfileSchema = new mongoose.Schema( {
     type: Date,
     default: Date.now
   }
-} );
+});
 
-module.exports = Profile = mongoose.model( 'profile', ProfileSchema );
+module.exports = Profile = mongoose.model('profile', ProfileSchema);
